@@ -10,7 +10,7 @@ fdValidator.validators.is0 = function (value, rule) {
 }
 
 const options = {
-  'request.body': {
+  query: {
     username: {
       rules: {
         is0: true,

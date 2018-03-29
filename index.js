@@ -32,11 +32,9 @@ function handleValidate(key, value, option, ctx) {
 }
 
 function fdValidator (options) {
-  // const queryOptions = options.query || {}
-  // const paramsOptions = options.params || {}
-  const needValidates = Object.keys(options)
   return async function (ctx, next) {
     await next()
+    const needValidates = Object.keys(options)
     needValidates.forEach(nv => {
       const params = analyze(ctx, nv)
       const option = options[nv]
@@ -57,37 +55,6 @@ function fdValidator (options) {
         handleValidate(key, params[key], option[key], ctx)
       })
     })
-    // const { query = {} , params = {} } = ctx
-    // const qKeys = Object.keys(queryOptions)
-    // const pKeys = Object.keys(paramsOptions)
-
-    // qKeys.forEach(key => {
-    //   const ruleType = queryOptions[key].rules && queryOptions[key].rules.type
-    //   const handleType = queryOptions[key].handles && queryOptions[key].handles.type || defaults.handle
-    //   const messageType = queryOptions[key].messages && queryOptions[key].messages.type || defaults.messages.type
-    //   if (ruleType) {
-    //     const value = validators.type(query[key], ruleType)
-    //     if (value !== false) {
-    //       query[key] = value === true ? query[key] : value
-    //     } else {
-    //       handleType(ctx, messageType(key, query[key], ruleType))
-    //       return
-    //     }
-    //   }
-    //   handleValidate(key, query[key], queryOptions[key], ctx)
-    // })
-    // pKeys.forEach(key => {
-    //   const ruleType = paramsOptions[key].rules && paramsOptions[key].rules.type
-    //   const handleType = paramsOptions[key].handles && paramsOptions[key].handles.type || defaults.handle
-    //   const messageType = paramsOptions[key].messages && paramsOptions[key].messages.type || defaults.messages.type      
-    //   const value = validators.type(params[key], ruleType)
-    //   if (value !== false) {
-    //     params[key] = value === true ? params[key] : value
-    //   } else {
-    //     handleType(ctx, messageType(key, params[key]))
-    //   }
-    //   handleValidate(key, params[key], paramsOptions[key], ctx)
-    // })
   }
 }
 

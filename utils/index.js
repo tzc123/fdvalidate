@@ -17,7 +17,7 @@ module.exports = {
       })
       return params
     } else {
-      return ctx.keys
+      return ctx[keys] || {}
     }
   },
   merge(obj1, obj2) {
