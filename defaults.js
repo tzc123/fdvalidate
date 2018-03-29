@@ -1,22 +1,22 @@
 module.exports = {
   messages: {
-    type: function (key, value) {
-      return `type ${key} ${value}`
+    type: function (key, value, type) {
+      return `${key}: input ${value}, but type ${type}`
     },
     required: function (key, value) {
-      return `required ${key} ${value}`
+      return `${key}: this key is required`
     },
-    minLength: function (key, value) {
-      return `minLength ${key} ${value}`
+    minLength: function (key, value, minLength) {
+      return `${key}: input ${value}, but minLength ${minLength}`
     },
-    maxLength: function (key, value) {
-      return `maxLength ${key} ${value}`
+    maxLength: function (key, value, maxLength) {
+      return `${key}: input ${value}, but maxLength ${maxLength}`
     },
     min: function (key, value) {
-      return `min ${key} ${value}`
+      return `${key}: min ${key} ${value}`
     },
     max: function (key, value) {
-      return `max ${key} ${value}`
+      return `${key}: max ${key} ${value}`
     }
   },
   handle: function (ctx, message) {

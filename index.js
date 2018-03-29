@@ -23,28 +23,28 @@ function handleValidate(key, value, options, ctx) {
   if (rules.minLength || rules.minLength === 0) {
     const res = validators.length(value, rules.minLength, Infinity)
     if (!res) {
-      (handles.minLength || defaults.handle)(ctx, messages.minLength(key, value))
+      (handles.minLength || defaults.handle)(ctx, messages.minLength(key, value, rules.minLength), rules.minLength)
       return false
     }
   } 
   if (rules.maxLength || rules.maxLength === 0) {
     const res = validators.length(value, -Infinity, rules.maxLength)
     if (!res) {
-      (handles.maxLength || defaults.handle)(ctx, messages.maxLength(key, value))
+      (handles.maxLength || defaults.handle)(ctx, messages.maxLength(key, value, rules.maxLength), rules.maxLength)
       return false
     }
   }
   if (rules.min || rules.min === 0) {
     const res = validators.size(value, rules.min, Infinity)
     if (!res) {
-      (handles.min || defaults.handle)(ctx, messages.min(key, value))
+      (handles.min || defaults.handle)(ctx, messages.min(key, value, rules.min), rules.min)
       return false
     }
   }
   if (rules.max || rules.max === 0) {
     const res = validators.size(value, -Infinity, rules.max)
     if (!res) {
-      (handles.max || defaults.handle)(ctx, messages.max(key, value))
+      (handles.max || defaults.handle)(ctx, messages.max(key, value, rules.max), rules.max)
       return false
     }
   }
@@ -68,7 +68,7 @@ function fdValidator (options) {
         if (value !== false) {
           query[key] = value === true ? query[key] : value
         } else {
-          handleType(ctx, messageType(key, query[key]))
+          handleType(ctx, messageType(key, query[key], ruleType))
         }
       }
       handleValidate(key, query[key], queryOptions[key], ctx)
