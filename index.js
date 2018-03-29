@@ -3,14 +3,14 @@ const validators = require('./validators')
 const { analyze, merge } = require('./utils')
 
 function handleValidate(key, value, option, ctx) {
-  const { rules = {}, handles = {} } = option
+  const { rules = {}, handlers = {} } = option
   if (
     typeof option != 'object' 
     || typeof rules != 'object'
-    || typeof handles != 'object'
+    || typeof handlers != 'object'
     || (option.messages && typeof option.messages != 'object')
   ) {
-    throw new Error('rules,handles,messages must be object')
+    throw new Error('rules,handlers,messages must be object')
   }
   const messages = merge(defaults.messages, option.messages || {})
   const validatorsKeys = Object.keys(validators)
@@ -23,7 +23,7 @@ function handleValidate(key, value, option, ctx) {
         messages[validatorkey] = () => {}
       }
       const message = (messages[validatorkey])(key, value, rules[validatorkey])
-      res || (handles[validatorkey] || defaults.handle)(ctx, message)
+      res || (handlers[validatorkey] || defaults.handler)(ctx, message)
       return res
     } else {
       return true
@@ -41,14 +41,14 @@ function fdValidator (options) {
       const pKeys = Object.keys(option)
       pKeys.forEach(key => {
         const ruleType = option[key].rules && option[key].rules.type
-        const handleType = option[key].handles && option[key].handles.type || defaults.handle
+        const handlerType = option[key].handlers && option[key].handlers.type || defaults.handler
         const messageType = option[key].messages && option[key].messages.type || defaults.messages.type
         if (ruleType) {
           const value = validators.type(params[key], ruleType)
           if (value !== false) {
             query[key] = value === true ? params[key] : value
           } else {
-            handleType(ctx, messageType(key, params[key], ruleType))
+            handlerType(ctx, messageType(key, params[key], ruleType))
             return
           }
         }
@@ -59,7 +59,7 @@ function fdValidator (options) {
 }
 
 fdValidator.messages = defaults.messages
-fdValidator.handle = defaults.handle
+fdValidator.handler = defaults.handler
 fdValidator.validators = validators
 
 module.exports = fdValidator

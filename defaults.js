@@ -22,7 +22,7 @@ module.exports = {
       return `${key}:  ${value} is more then ${min}`
     },
   },
-  handle: function (ctx, message) {
+  handler: function (ctx, message) {
     ctx.body = {
       success: false,
       message

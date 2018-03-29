@@ -21,7 +21,7 @@ const options = {
           return '没有0'
         }
       },
-      handles: {
+      handlers: {
       }
     }
   }

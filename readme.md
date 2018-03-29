@@ -23,7 +23,7 @@ const options = {
         }
       },
       // 校验失败时，所做的处理函数，若不设置，则采用默认处理函数
-      handles: {
+      handlers: {
         maxLength(ctx, message, rule) {
           ctx.body = {
             success: false,
@@ -41,7 +41,7 @@ fdValidator.messages.maxLength = function (key, value, rule) {
   return `${key}超出长度了`
 }
 
-fdValidator.handle = function (ctx, message, rule) {
+fdValidator.handler = function (ctx, message, rule) {
   ctx.body = {
     success: false,
     message: '参数错误'
@@ -70,7 +70,7 @@ app.listen(3000, function () {
 })
 ```
 
-### 目前支持规则
+### supported validate rules
 * required 是否必填
 * type 数据类型
   * number
