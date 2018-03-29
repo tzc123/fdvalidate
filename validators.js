@@ -1,9 +1,6 @@
 const checkType = require('./checkType')
 const { email, phone } = require('./regExps')
-
-function exist(value) {
-  return value || value === 0
-}
+const { exist } = require('./utils')
 
 
 module.exports = {
