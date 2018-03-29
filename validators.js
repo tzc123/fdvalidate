@@ -1,37 +1,13 @@
-const types = ['string', 'number', 'object', 'array']
+const checkType = require('./checkType')
 
-const checkType = {
-  string(value) {
-    return value
-  },
-  number(value) {
-    if (!isNaN(+value)) {
-      return +value
-    } else {
-      return false
-    }
-  },
-  object(value) {
-    value = JSON.parse(value)
-    if (Object.prototype.toString.call(value) == '[object Object]') {
-      return value
-    } else {
-      return false
-    }
-  },
-  array(value) {
-    value = JSON.parse(value)
-    if (Object.prototype.toString.call(value) == '[object Array]') {
-      return value
-    } else {
-      return false
-    }
-  }
+function exist(value) {
+  return value || value === 0
 }
+
 
 module.exports = {
   type(value, type) {
-    if (!value && value != 0) {
+    if (!exist(value)) {
       return true
     } else if (typeof type != 'string' || typeof value != 'string') {
       throw new Error('type(value:?[string], type:?[string])')
@@ -40,37 +16,61 @@ module.exports = {
     }
   },
   required(value) {
-    if (!value && value != 0) {
+    if (!exist(value)) {
       return false
     }
     return true
   },
-  length(value, min, max) {
-    if (typeof min != 'number' || (!!max && typeof max != 'number')) {
-      throw new Error('length(type:[string], value:[string], min:?[number], max?[number])')
+  minLength(value, min) {
+    if (typeof min != 'number') {
+      throw new Error('minLength(value:[string | number], min:?[number])')
     }
-    if (!value && value != 0) {
+    if (!exist(value)) {
       return true
-    } else if (value.length < min) {
-      return false
-    } else if (value.length > max) {
-      return false
+    } else if (!exist(value.length)) {
+      throw new Error('minLength(value:[string | number], min:?[number])')
     } else {
-      return true
+      return value.length >= min
     }
   },
-  size(value, min, max) {
-    if (typeof min != 'number' || (!!max && typeof max != 'number')) {
-      throw new Error('size(type:[string], value:[number], min:?[number], max:?[number])')
+  maxLength(value, max) {
+    if (typeof max != 'number' || (exist(value) && !exist(value.length))) {
+      throw new Error('maxLength(value:[string | number], max:?[number])')
     }
-    if (!value && value != 0) {
+    if (!exist(value)) {
       return true
-    } else if (value < min) {
-      return false
-    } else if (value > max) {
-      return false
     } else {
+      return value.length <= max
+    }
+  },
+  fixed(value, fixed) {
+    if (typeof fixed != 'number' || (exist(value) && !exist(value.length))) {
+      throw new Error('fixed(value:[string], fixed:?[number])')
+    }
+    if (!exist(value)) {
       return true
+    } else {
+      return value.length == fixed
+    }
+  },
+  min(value, min) {
+    if (typeof min != 'number' || typeof value != 'number') {
+      throw new Error('min(value:[number], min:[number])')
+    }
+    if (!exist(value)) {
+      return true
+    } else {
+      return value >= min
+    }
+  },
+  max(value, max) {
+    if (typeof max != 'number' || typeof value != 'number') {
+      throw new Error('max(value:[number], max:[number])')
+    }
+    if (!exist(value)) {
+      return true
+    } else {
+      return value <= max
     }
   }
 }

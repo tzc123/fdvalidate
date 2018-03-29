@@ -8,7 +8,7 @@ const options = {
   query: {
     username: {
       rules: {
-        type: 'object',
+        type: 'phone',
         required: true
       },
       messages: {

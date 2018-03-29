@@ -11,6 +11,7 @@ const options = {
     username: {
       // 校验的规则
       rules: {
+        type: 'string',
         required: true,
         maxLength: 10,
         minLength: 5
@@ -37,11 +38,23 @@ const options = {
 
 // 可设置默认消息生成函数、处理函数
 fdValidator.defaults.messages.maxLength = function (key, value, rule) {
-
+  return `${key}超出长度了`
 }
 
 fdValidator.defaults.handle = function (ctx, message, rule) {
-
+  ctx.body = {
+    success: false,
+    message: '参数错误'
+  }
+}
+// 重写校验规则
+fdValidator.validators.required = function (value, rule) {
+  return value !== null && value !== undefined
+}
+// 添加自定义类型
+fdVlidator.types.ID = function (value) {
+  const IDRegExp = /^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/
+  return IDRegExp.test(value)
 }
 
 router.get('/', fdValidator(options), ctx => {
@@ -64,6 +77,8 @@ app.listen(3000, function () {
   * string
   * array
   * object
+  * phone 手机号码
+  * email 邮箱号
 * max 最大值
 * min 最小值
 * maxLength 最大长度
