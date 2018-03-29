@@ -1,12 +1,4 @@
-const { email, phone } = require('./regExps')
-
 module.exports = {
-  phone(value) {
-    return phone.test(value)
-  },
-  emali(value) {
-    return email.test(value)
-  },
   string(value) {
     return value
   },

@@ -1,7 +1,6 @@
 const defaults = require('./defaults')
 const merge = require('./utils/merge')
 const validators = require('./validators')
-const checkType = require('./checkType')
 
 function handleValidate(key, value, options, ctx) {
   const { rules = {}, handles = {} } = options
@@ -19,7 +18,11 @@ function handleValidate(key, value, options, ctx) {
   return validatorsKeys.every(validatorkey => {
     if (rules[validatorkey]) {
       const res = validators[validatorkey](value, rules[validatorkey])
-      const message = messages[validatorkey](key, value, rules[validatorkey])
+      if (!messages[validatorkey]) {
+        console.log(`custom rule ${validatorkey} require a message generate function`)
+        messages[validatorkey] = () => {}
+      }
+      const message = (messages[validatorkey])(key, value, rules[validatorkey])
       res || (handles[validatorkey] || defaults.handle)(ctx, message)
       return res
     } else {
@@ -31,6 +34,7 @@ function handleValidate(key, value, options, ctx) {
 function fdValidator (options) {
   const queryOptions = options.query || {}
   const paramsOptions = options.params || {}
+  // const needValidate = Object.keys(options)
   return async function (ctx, next) {
     await next()
     const { query = {} , params = {} } = ctx
@@ -67,8 +71,8 @@ function fdValidator (options) {
   }
 }
 
-fdValidator.defaults = defaults
+fdValidator.messages = defaults.messages
+fdValidator.handle = defaults.handle
 fdValidator.validators = validators
-fdValidator.checkType = checkType
 
 module.exports = fdValidator

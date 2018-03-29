@@ -1,4 +1,5 @@
 const checkType = require('./checkType')
+const { email, phone } = require('./regExps')
 
 function exist(value) {
   return value || value === 0
@@ -71,6 +72,20 @@ module.exports = {
       return true
     } else {
       return value <= max
+    }
+  },
+  isEmail(value) {
+    if (!exist(value)) {
+      return true
+    } else {
+      return email.test(value)
+    }
+  },
+  isPhone(value) {
+    if (!exist(value)) {
+      return true
+    } else {
+      return phone.test(value)
     }
   }
 }

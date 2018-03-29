@@ -4,26 +4,23 @@ const router = new Router()
 const app = new Koa()
 const fdValidator = require('./index')
 
+fdValidator.validators.is0 = function (value, rule) {
+  console.log(value, rule)
+  return value == 0
+}
+
 const options = {
   query: {
     username: {
       rules: {
-        type: 'phone',
-        required: true
+        is0: true
       },
       messages: {
-        maxLength(key, value, rule) {
-          return `query ${key} ${value} is longer then ${rule}`
+        is0: function (key, value, rule) {
+          return '没有0'
         }
       },
       handles: {
-        maxLength(ctx, message, rule) {
-          ctx.body = {
-            success: false,
-            message: message,
-            maxLength: rule
-          }
-        }
       }
     }
   }
