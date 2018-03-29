@@ -12,12 +12,15 @@ module.exports = {
     maxLength: function (key, value, maxLength) {
       return `${key}: input ${value}, but maxLength ${maxLength}`
     },
+    fixed: function (key, value, fixed) {
+      return `${key}: length fixed ${fixed}`
+    },
     min: function (key, value) {
       return `${key}: min ${key} ${value}`
     },
     max: function (key, value) {
       return `${key}: max ${key} ${value}`
-    }
+    },
   },
   handle: function (ctx, message) {
     ctx.body = {

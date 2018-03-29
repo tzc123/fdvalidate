@@ -20,6 +20,13 @@ function handleValidate(key, value, options, ctx) {
       return false
     }
   }
+  if (rules.fixed || rules.fixed === 0) {
+    const res = validators.length(value, rules.fixed, rules.fixed)
+    if (!res) {
+      (handles.fixed || defaults.handle)(ctx, messages.fixed(key, value, rules.fixed), rules.fixed)
+      return false
+    }
+  } 
   if (rules.minLength || rules.minLength === 0) {
     const res = validators.length(value, rules.minLength, Infinity)
     if (!res) {
@@ -69,6 +76,7 @@ function fdValidator (options) {
           query[key] = value === true ? query[key] : value
         } else {
           handleType(ctx, messageType(key, query[key], ruleType))
+          return
         }
       }
       handleValidate(key, query[key], queryOptions[key], ctx)
@@ -88,6 +96,9 @@ function fdValidator (options) {
   }
 }
 
-fdValidator.defaults = defaults
+fdValidator.defaults = {
+  ...defaults,
+  validators
+}
 
 module.exports = fdValidator

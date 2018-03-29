@@ -8,9 +8,8 @@ const options = {
   query: {
     username: {
       rules: {
-        required: true,
-        maxLength: 10,
-        minLength: 5
+        type: 'object',
+        required: true
       },
       messages: {
         maxLength(key, value, rule) {

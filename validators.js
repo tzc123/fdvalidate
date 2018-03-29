@@ -1,33 +1,42 @@
 const types = ['string', 'number', 'object', 'array']
 
+const checkType = {
+  string(value) {
+    return value
+  },
+  number(value) {
+    if (!isNaN(+value)) {
+      return +value
+    } else {
+      return false
+    }
+  },
+  object(value) {
+    value = JSON.parse(value)
+    if (Object.prototype.toString.call(value) == '[object Object]') {
+      return value
+    } else {
+      return false
+    }
+  },
+  array(value) {
+    value = JSON.parse(value)
+    if (Object.prototype.toString.call(value) == '[object Array]') {
+      return value
+    } else {
+      return false
+    }
+  }
+}
+
 module.exports = {
   type(value, type) {
     if (!value && value != 0) {
       return true
     } else if (typeof type != 'string' || typeof value != 'string') {
       throw new Error('type(value:?[string], type:?[string])')
-    } else if (type == 'array') {
-      value = JSON.parse(value)
-      if (Object.prototype.toString.call(value) == '[object Array]') {
-        return value
-      } else {
-        return false
-      }
-    } else if (type == 'object') {
-      value = JSON.parse(value)
-      if (Object.prototype.toString.call(value) == '[object Object]') {
-        return value
-      } else {
-        return false
-      }
-    } else if (type == 'string') {
-      return value
-    } else if (type == 'number') {
-      if (!isNaN(+value)) {
-        return +value
-      } else {
-        return false
-      }
+    } else {
+      return checkType[type](value)
     }
   },
   required(value) {

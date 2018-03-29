@@ -58,13 +58,24 @@ app.listen(3000, function () {
 ```
 
 ### 目前支持规则
-* required
-* type
+* required 是否必填
+* type 数据类型
   * number
   * string
   * array
   * object
-* max
-* min
-* maxLength
-* minLength
+* max 最大值
+* min 最小值
+* maxLength 最大长度
+* minLength 最小长度
+* fixed 固定长度
+
+### 提示
+尽量避免校验规则冲突，如：
+```javascript
+{
+  type: 'object',
+  maxlength: '5'
+}
+```
+将无视maxLength
