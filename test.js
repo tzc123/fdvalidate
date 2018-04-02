@@ -2,36 +2,59 @@ const Koa = require('koa')
 const Router = require('koa-router')
 const router = new Router()
 const app = new Koa()
-const fdValidator = require('./index')
-
-fdValidator.validators.is0 = function (value, rule) {
-  console.log(value, rule)
-  return value == 0
-}
+const body = require('koa-body');
+const fdValidator = require('./src/index')
 
 const options = {
   query: {
-    username: {
+    rules: {
+      required: true,
+      type: 'number',
+      minLength: 2
+    },
+    messages: {
+      required() {
+        return 'haha is required'
+      }
+    },
+    handlers: {
+      required(ctx, message) {
+        ctx.body = {
+          message
+        }
+      }
+    }
+  },
+  'request.body': {
+    haha: {
       rules: {
-        is0: true,
-        required: true
+        required: true,
+        type: 'number',
+        minLength: 2
       },
       messages: {
-        is0: function (key, value, rule) {
-          return '没有0'
+        required() {
+          return 'haha is required'
         }
       },
       handlers: {
+        required(ctx, message) {
+          ctx.body = {
+            message
+          }
+        }
       }
     }
   }
 }
 
-router.get('/', fdValidator(options), ctx => {
+router.post('/', fdValidator(options), ctx => {
   ctx.body = {
     success: true
   }
 })
+
+app.use(body())
 
 app.use(router.routes())
 

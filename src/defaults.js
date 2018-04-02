@@ -7,19 +7,19 @@ module.exports = {
       return `${key}: this key is required`
     },
     minLength: function (key, value, minLength) {
-      return `${key}: ${value} is shorter ${minLength}`
+      return `${key}: the length of ${value} is shorter than ${minLength}`
     },
     maxLength: function (key, value, maxLength) {
-      return `${key}: input ${value} is longer then ${maxLength}`
+      return `${key}: the length of ${value} is longer than ${maxLength}`
     },
     fixed: function (key, value, fixed) {
       return `${key}: length fixed ${fixed}`
     },
     min: function (key, value, min) {
-      return `${key}: ${value} is lesser then ${min}`
+      return `${key}: ${value} is lesser than ${min}`
     },
-    max: function (key, value) {
-      return `${key}:  ${value} is more then ${min}`
+    max: function (key, value, max) {
+      return `${key}:  ${value} is more than ${max}`
     },
   },
   handler: function (ctx, message) {

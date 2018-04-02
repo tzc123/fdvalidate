@@ -21,29 +21,37 @@ module.exports = {
   },
   minLength(value, min) {
     if (typeof min != 'number') {
-      throw new Error('minLength(value:[string | number], min:?[number])')
+      throw new Error('minLength(value:[string | number], min:[number])')
+    }
+    if (typeof value == 'number') {
+      value = value + ''
     }
     if (!exist(value)) {
       return true
     } else if (!exist(value.length)) {
-      throw new Error('minLength(value:[string | number], min:?[number])')
+      throw new Error('minLength(value:[string | number], min:[number])')
     } else {
       return value.length >= min
     }
   },
   maxLength(value, max) {
-    if (typeof max != 'number' || (exist(value) && !exist(value.length))) {
-      throw new Error('maxLength(value:[string | number], max:?[number])')
+    if (typeof max != 'number') {
+      throw new Error('maxLength(value:[string | number], max:[number])')
+    }
+    if (typeof value == 'number') {
+      value = value + ''
     }
     if (!exist(value)) {
       return true
+    } else if (!exist(value.length)) {
+      throw new Error('maxLength(value:[string | number], max:[number])')
     } else {
       return value.length <= max
     }
   },
   fixed(value, fixed) {
     if (typeof fixed != 'number' || (exist(value) && !exist(value.length))) {
-      throw new Error('fixed(value:[string], fixed:?[number])')
+      throw new Error('fixed(value:[string], fixed:[number])')
     }
     if (!exist(value)) {
       return true

@@ -16,7 +16,7 @@ function handleValidate(key, value, option, ctx) {
   const validatorsKeys = Object.keys(validators)
   validatorsKeys.shift()
   return validatorsKeys.every(validatorkey => {
-    if (rules[validatorkey]) {
+    if (rules[validatorkey] || rules[validatorkey] == 0) {
       const res = validators[validatorkey](value, rules[validatorkey])
       if (!messages[validatorkey]) {
         console.log(`custom rule ${validatorkey} require a message generate function`)
@@ -36,7 +36,9 @@ function fdValidator (options) {
     await next()
     const needValidates = Object.keys(options)
     needValidates.forEach(nv => {
+      console.log(ctx.request)
       const params = analyze(ctx, nv)
+      console.log(params)
       const option = options[nv]
       const pKeys = Object.keys(option)
       pKeys.forEach(key => {
@@ -46,7 +48,7 @@ function fdValidator (options) {
         if (ruleType) {
           const value = validators.type(params[key], ruleType)
           if (value !== false) {
-            query[key] = value === true ? params[key] : value
+            params[key] = value === true ? params[key] : value
           } else {
             handlerType(ctx, messageType(key, params[key], ruleType))
             return
