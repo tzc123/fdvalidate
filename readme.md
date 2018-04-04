@@ -73,7 +73,7 @@ app.listen(3000, function () {
 })
 ```
 
-### supported validate rules
+### 目前支持的校验规则
 * required 是否必填
 * type 数据类型
   * number
